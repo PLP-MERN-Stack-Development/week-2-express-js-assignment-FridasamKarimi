@@ -1,9 +1,13 @@
 // server.js - Starter Express server for Week 2 assignment
 
 // Import required modules
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
+const productrotes = require('.routes/products');
+const { loggerMiddleware } = require('./middleware/logger')const express  require('')
+const { authMiddleware } = require('./middleware/auth');
 
 // Initialize Express app
 const app = express();
