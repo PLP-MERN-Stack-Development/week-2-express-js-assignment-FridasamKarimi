@@ -5,9 +5,12 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
-const productrotes = require('.routes/products');
-const { loggerMiddleware } = require('./middleware/logger')const express  require('')
+const productRoutes = require('.routes/products');
+const { loggerMiddleware } = require('./middleware/logger');
 const { authMiddleware } = require('./middleware/auth');
+const { errorHandler } = require('./middleware/errorHandler');
+
+
 
 // Initialize Express app
 const app = express();
@@ -15,6 +18,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware setup
 app.use(bodyParser.json());
+app.use(loggerMiddleware);
+app.use(authMiddleware);
 
 // Sample in-memory products database
 let products = [
@@ -49,12 +54,13 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Product API! Go to /api/products to see all products.');
 });
 
-// TODO: Implement the following routes:
-// GET /api/products - Get all products
-// GET /api/products/:id - Get a specific product
-// POST /api/products - Create a new product
-// PUT /api/products/:id - Update a product
-// DELETE /api/products/:id - Delete a product
+//API ROUTES
+app.use('/api/products', productRoutes);
+
+
+//Error handling
+app.use(errorHandler);
+
 
 // Example route implementation for GET /api/products
 app.get('/api/products', (req, res) => {
